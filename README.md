@@ -24,7 +24,9 @@ VaultDB primitives requires the following dependencies:
  
  ### Configuration
  
- Adjust the data federation configuration using within /setup.   Configure any Java Native Interface (JNI)-specific parameters in  src/main/resources/org/bytedeco/javacpp/properties.
+ Adjust the data federation configuration using within ```conf/setup```.   
+ 
+ Configure any Java Native Interface (JNI)-specific parameters in  ```src/main/resources/org/bytedeco/javacpp/properties```.
  
  ## Example Code
  
