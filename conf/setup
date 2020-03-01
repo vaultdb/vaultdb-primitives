@@ -1,0 +1,20 @@
+#configure locations
+codegen-target=bin
+data-providers=conf/connections/localhosts
+
+#log information
+log-level=debug
+local-log-file=logs/vaultdb.log
+
+
+emp-port=54321
+mpc-lib=emp
+javacpp-jar=.m2/repository/org/bytedeco/javacpp/1.5.2/javacpp-1.5.2.jar
+
+#postgres credentials and info
+[psql]
+host=localhost
+port=5432
+db=smcql_testdb
+user=smcql
+password=smcql123
