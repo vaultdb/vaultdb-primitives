@@ -15,7 +15,7 @@ VaultDB performs all of its query planning and optimization in Java because it e
 ## Dependencies
 
 VaultDB primitives requires the following dependencies:
-* EMP Toolkit: [install instructions](https://github.com/emp-toolkit/emp-readme)
+* EMP Toolkit: [installation instructions](https://github.com/emp-toolkit/emp-readme)
 * Maven 4
 * JavaCPP 1.5.2
 * Java 8+
