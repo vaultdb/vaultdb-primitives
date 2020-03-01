@@ -34,7 +34,7 @@ VaultDB primitives requires the following dependencies:
  
 VaultDB primitives demos the following facilities:
  * BuildMillionaires: Compiler for dynamically generated C++ and Java code.  Execute it with run-alice.sh and run-bob.sh
- * SortByteArray: demonstrates building and loading a SQL-over-MPC query.  Forks and execs Alice and Bob for unit test because they cannot run in the same process space.
+ * SortByteArray: builds, loads, and runs an EMP program from within Java.  Forks and execs Alice and Bob for unit test because they cannot run in the same process space.
 
 
 ## Acknowledgments 
