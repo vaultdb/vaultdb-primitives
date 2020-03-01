@@ -30,7 +30,7 @@ VaultDB primitives requires the following dependencies:
  
  ## Example Code
  
- This code demonstrates the following steps in oblivious query evaluation.
+VaultDB primitives demos the following facilities:
  * Millionaires: Java-to-C++ adapter for EMP Toolkit using JNI 
  * SortedByteArray: demonstrates a more complicated byte array hand-off from Java to EMP and back.  Forks and execs Alice and Bob for unit test because they cannot run in the same process space.
 
