@@ -1,5 +1,5 @@
 # VaultDB Primitives
-This framework demonstrates how to map relational database semantics onto secure computation.  It is part of an ongoing research effort to optimize SQL queries computed with secure computation.  
+This framework will demonstrate how to map relational database semantics onto secure computation.  It is part of an ongoing research effort to optimize SQL queries computed with secure computation.  
 
 This code was developed by Madhav Suresh and Jennie Rogers
 
