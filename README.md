@@ -20,7 +20,7 @@ VaultDB generates SQL-over-MPC code in EMP Toolkit for ad-hoc SQL queries.  The 
 
 VaultDB primitives requires the following dependencies:
 * EMP Toolkit: [installation instructions](https://github.com/emp-toolkit/emp-readme)
-* Maven 4
+* Maven 3.6+
 * JavaCPP 1.5.2
 * Java 8+
  
