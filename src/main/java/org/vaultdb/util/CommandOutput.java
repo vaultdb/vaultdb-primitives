@@ -1,10 +1,11 @@
 package org.vaultdb.util;
 
 public class CommandOutput {
-	public String output;
+	public String stdout;
+	public String stderr;
 	public int exitCode;
 	
 	public CommandOutput() {
-		output = new String();
+		stdout = new String();
 	}
 };

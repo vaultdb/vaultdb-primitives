@@ -22,8 +22,7 @@ public class SortByteArrayTest  extends TestCase  {
 		EmpRunnable aliceRunnable = new EmpRunnable(fullyQualifiedClassName, 1, 54321, "0043,3592", false);
 		EmpRunnable bobRunnable = new EmpRunnable(fullyQualifiedClassName, 2, 54321, "0414,7123", false);
 
-	   EmpBuilder builder = new EmpBuilder();
-	   builder.compile(fullyQualifiedClassName, true);
+		EmpJniUtilities.buildEmpProgram("SortByteArray");
 
 	   
 		
@@ -41,7 +40,7 @@ public class SortByteArrayTest  extends TestCase  {
 		
 		System.out.println("Revealing output!");
 		
-		List<String> output = EmpJniUtilities.revealStringOutput(aliceOutput, bobOutput, tupleWidth);
+		List<String> output = EmpJniUtilities.revealOutput(aliceOutput, bobOutput, tupleWidth);
 		System.out.println("Query output: " + output);
 
 		List<String> expectedOutput = new ArrayList<>(Arrays.asList("0043", "0414", "3592",  "7123"));

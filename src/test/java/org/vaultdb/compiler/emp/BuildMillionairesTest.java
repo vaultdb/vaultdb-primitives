@@ -1,5 +1,7 @@
 package org.vaultdb.compiler.emp;
 
+import org.vaultdb.util.EmpJniUtilities;
+
 import junit.framework.TestCase;
 
 // workflow for building executor/Millionaires demo with supporting JNI classes
@@ -8,9 +10,7 @@ public class BuildMillionairesTest   extends TestCase {
     
 	public void testBuildMillionaires() throws Exception {
 		
-		   EmpBuilder builder = new EmpBuilder();
-		   assertTrue(builder.compile(fullyQualifiedClassName, true));
-
+			EmpJniUtilities.buildEmpProgram("Millionaires");
 		   
 		   System.out.println("Build millionaires successful!");
 	}

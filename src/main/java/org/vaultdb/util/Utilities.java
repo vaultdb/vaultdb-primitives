@@ -1,6 +1,7 @@
 package org.vaultdb.util;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,6 +9,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
@@ -20,6 +23,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.vaultdb.config.SystemConfiguration;
@@ -133,53 +140,34 @@ public class Utilities {
 		
 	public static CommandOutput runCmd(String aCmd) throws IOException, InterruptedException {
 		
-		String[] cmd = StringUtils.split(aCmd, ' ');
-		return runCmd(cmd, null);
+		return runCmd(aCmd, null);
 	}
 	
-public static CommandOutput runCmd(String aCmd, String aWorkingDirectory) throws IOException, InterruptedException {
+public static CommandOutput runCmd(String command, String aWorkingDirectory) throws IOException, InterruptedException {
 		
-		String[] cmd = StringUtils.split(aCmd, ' ');
-		return runCmd(cmd, aWorkingDirectory);
-	}
 	
-	
-	
-	public static CommandOutput runCmd(String[] cmd, String workingDirectory) throws IOException, InterruptedException {
-
-		
-		if(workingDirectory == null || workingDirectory == "") {
-			workingDirectory = Utilities.getVaultDBRoot();
+		if(aWorkingDirectory == null || aWorkingDirectory == "") {
+			aWorkingDirectory = Utilities.getVaultDBRoot();
 		}
 		
-		File dir = new File(workingDirectory);
+		ByteArrayOutputStream stdout = new ByteArrayOutputStream(); 
+	    ByteArrayOutputStream stderr = new ByteArrayOutputStream();
+	    PumpStreamHandler psh = new PumpStreamHandler(stdout, stderr);
+	    
+	    
+	    CommandLine cl = CommandLine.parse(command);
+	    DefaultExecutor exec = new DefaultExecutor();
+	    exec.setStreamHandler(psh);
+	    int exitValue = 0;
+	    exitValue = exec.execute(cl);
+	    
+	    CommandOutput cmdOutput = new CommandOutput();
+	    cmdOutput.stdout = stdout.toString();
+	    cmdOutput.stderr = stderr.toString();
 		
-		Process p = java.lang.Runtime.getRuntime().exec(cmd, null, dir);
-
-		BufferedReader stderr = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-		BufferedReader stdout = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-		String err, out;
-		
-		CommandOutput cmdOutput = new CommandOutput();
-		
-		err = stderr.readLine();
-		out = stdout.readLine();
-		while(err != null || out != null) {
-			if(err != null) {
-				cmdOutput.output += err + "\n";
-				err = stderr.readLine();
-			}
-			if(out != null) {
-				cmdOutput.output += out + "\n";
-				out = stdout.readLine();
-			}
-		}		
-		
-		p.waitFor();
-		
-		cmdOutput.exitCode = p.exitValue();
+		cmdOutput.exitCode = exitValue;
 		return cmdOutput;
+		
 	}
 
 
@@ -206,7 +194,7 @@ public static CommandOutput runCmd(String aCmd, String aWorkingDirectory) throws
 
 		CommandOutput output =  runCmd(cmd);
 		if(output.exitCode != 0) {
-			System.out.println("diff: " + output.output);
+			System.out.println("diff: " + output.stdout);
 		}
 		return output.exitCode == 0;
 	}
@@ -226,6 +214,29 @@ public static CommandOutput runCmd(String aCmd, String aWorkingDirectory) throws
 		}
 		return port;
 	}
+
+
+	  public static String getCodeGenTarget() {
+
+		    try {
+
+		      SystemConfiguration config = SystemConfiguration.getInstance();
+		      String nodeType = config.getProperty("node-type"); // local or remote
+		      String localTarget =
+		          (nodeType.equals("remote"))
+		              ? config.getProperty("remote-codegen-target")
+		              : config.getProperty("local-codegen-target");
+
+		      return getVaultDBRoot() + "/" + localTarget;
+
+		    } catch (Exception e) {
+		      System.err.println(
+		          "Missing local-codegen-target parameter (or remote-codegen-target), please add it to your config file.");
+		      e.printStackTrace();
+		    }
+		    // default
+		    return getVaultDBRoot() + "/bin";
+		  }
 
 
 

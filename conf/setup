@@ -1,10 +1,18 @@
 #configure locations
 codegen-target=bin
 data-providers=conf/connections/localhosts
+node-type=local
+
+
+#codegen and compiler config
+local-codegen-target=src/main/java/org/vaultdb/compiler/emp/generated
+generated-class-prefix=org.vaultdb.compiler.emp.generated
+maven-location=/usr/local/bin/mvn
+
 
 #log information
-log-level=debug
-local-log-file=logs/vaultdb.log
+log-level=info
+log-file=logs/vaultdb.log
 
 
 emp-port=54321

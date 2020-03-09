@@ -7,6 +7,7 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.vaultdb.compiler.emp.EmpBuilder;
 import org.vaultdb.config.SystemConfiguration;
+import org.vaultdb.util.EmpJniUtilities;
 import org.vaultdb.util.Utilities;
 
 // class for invoking emp within a thread
@@ -55,8 +56,7 @@ public class EmpRunnable implements Runnable {
     	try {
     	
     		if(compile) {
-    			EmpBuilder builder = new EmpBuilder();
-    			builder.compile(className, true);
+    			EmpJniUtilities.buildEmpProgram(className);
     		}
     		
 

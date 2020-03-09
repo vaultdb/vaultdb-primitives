@@ -30,5 +30,11 @@ public class EmpProgram {
 	  }
 
 
+    public String helloWorld() {
+    	String className = this.getClass().getName();
+    	return "I am a " + className + "!";
+    }
+    
+
 
 }
