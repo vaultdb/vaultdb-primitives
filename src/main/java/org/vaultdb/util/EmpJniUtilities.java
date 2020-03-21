@@ -117,7 +117,7 @@ public class EmpJniUtilities {
     String cache = System.getProperty("user.home") + "/.javacpp/cache";
     FileUtils.deleteDirectory(new File(cache));
 
-    String deleteGeneratedClassFiles =
+    /*String deleteGeneratedClassFiles =
         "rm "
             + Utilities.getVaultDBRoot()
             + "/target/classes/org/vaultdb/compiler/emp/generated/"
@@ -130,7 +130,7 @@ public class EmpJniUtilities {
     } catch(Exception e) {
     	SystemConfiguration.getInstance().getLogger().info("EMP generated code cleanup snagged at: " + e.getMessage());
     	e.printStackTrace();
-    }
+    }*/
     
   }
 
@@ -235,10 +235,12 @@ public class EmpJniUtilities {
 		// fork and exec EmpBuilder to make it see the new files
 		
 
-		String mvnLocation = SystemConfiguration.getInstance().getProperty("maven-location");
+		SystemConfiguration config = SystemConfiguration.getInstance();
+		Logger logger = config.getLogger();
+		String mvnLocation = config.getProperty("maven-location");
 		
 		String command =  mvnLocation +  " exec:java -Dexec.mainClass=\"org.vaultdb.compiler.emp.EmpBuilder\" -Dexec.args=\"" + className + "\"";
-		System.out.println("Running command: " + command);
+		logger.info("EmpBuilder command: " + command);
 		Utilities.runCmd(command);
 		
 		

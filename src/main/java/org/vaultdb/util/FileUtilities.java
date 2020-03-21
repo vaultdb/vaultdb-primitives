@@ -16,9 +16,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.BitSet;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
+import org.vaultdb.config.SystemConfiguration;
 
 public class FileUtilities {
 	public static String readSQL(String filename) throws IOException {
@@ -64,7 +66,9 @@ public class FileUtilities {
 
 	public static void copyFile(String src, String dst) throws Exception {
 		String cmd = "cp " + src + " " + dst;
-				
+		
+		Logger logger = SystemConfiguration.getInstance().getLogger();
+		logger.info("Running " + cmd);
 		
 		String cwd = System.getProperty("user.dir");
     	CommandOutput out = Utilities.runCmd(cmd, cwd);
