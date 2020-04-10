@@ -42,7 +42,7 @@ public class EmpJniUtilities {
     return value;
   }
 
-  
+
   // output handling
   public static List<String> revealStringOutput(String alice, String bob, int tupleWidth) {
     assert (alice.length() == bob.length());
@@ -105,7 +105,7 @@ public class EmpJniUtilities {
     return value;
   }
 
-  
+
   // for debugging this does a deep delete on previous builds
   public static void cleanEmpCode(String className) throws Exception {
     Path generatedFiles = Paths.get(Utilities.getCodeGenTarget());
@@ -123,15 +123,15 @@ public class EmpJniUtilities {
             + "/target/classes/org/vaultdb/compiler/emp/generated/"
             + className
             + "*";
-    
-    
-    try { 	
+
+
+    try {
     	Utilities.runCmd(deleteGeneratedClassFiles);
     } catch(Exception e) {
     	SystemConfiguration.getInstance().getLogger().info("EMP generated code cleanup snagged at: " + e.getMessage());
     	e.printStackTrace();
     }*/
-    
+
   }
 
   private static void deleteFilesForPathByPrefix(final Path path, final String prefix) {
@@ -143,7 +143,7 @@ public class EmpJniUtilities {
     }
   }
 
- 
+
   public static int getEmpPort() throws Exception {
     int port;
     // try local source
@@ -182,21 +182,21 @@ public class EmpJniUtilities {
     }
   }
 
-  
+
 	public static byte[] deserializeBooleans(boolean[] src) {
 		int byteCount = (int) Math.ceil(src.length / 8.0);
-		
+
 		byte[] dst = new byte[byteCount];
-		
+
 		for(int i = 0; i < byteCount; ++i) {
-			dst[i] = (byte)((src[i*8]?1<<7:0) + (src[i*8+1]?1<<6:0) + (src[i*8+2]?1<<5:0) + 
-	                (src[i*8+3]?1<<4:0) + (src[i*8+4]?1<<3:0) + (src[i*8+5]?1<<2:0) + 
+			dst[i] = (byte)((src[i*8]?1<<7:0) + (src[i*8+1]?1<<6:0) + (src[i*8+2]?1<<5:0) +
+	                (src[i*8+3]?1<<4:0) + (src[i*8+4]?1<<3:0) + (src[i*8+5]?1<<2:0) +
 	                (src[i*8+6]?1<<1:0) + (src[i*8+7]?1:0));
 		}
-		
+
 		return dst;
 	}
-	
+
 //output handling
 	public static List<String> revealOutput(boolean[] alice, boolean[] bob, int tupleWidth) {
 		assert(alice.length == bob.length);
@@ -204,46 +204,50 @@ public class EmpJniUtilities {
 		int tupleBits = tupleWidth*8; // 8 bits / char
 		int tupleCount = alice.length / tupleBits;
 		List<String> output = new ArrayList<String>();
-		
 
-		
+
+
 		for(int i = 0; i < alice.length; ++i) {
-			decrypted[i] = alice[i] ^ bob[i];	
+			decrypted[i] = alice[i] ^ bob[i];
 		}
 
-		
+
 		byte[] allBytes = deserializeBooleans(decrypted);
 		byte[] bytes;
-		
+
 		int readIdx = 0;
 		for(int i = 0; i < tupleCount; ++i) {
 			int fromIdx = readIdx;
 			int toIdx = fromIdx + tupleWidth;
-			
+
 			bytes = Arrays.copyOfRange(allBytes, fromIdx, toIdx);
 			String tuple = new String(bytes);
-			
+
 			output.add(tuple);
 			readIdx = toIdx;
 		}
-		
-		return output;		
+
+		return output;
 	}
 
-	
-	public static void buildEmpProgram(String className) throws Exception {
-		// fork and exec EmpBuilder to make it see the new files
-		
+  public static void buildEmpProgram(String className) throws Exception {
 
-		SystemConfiguration config = SystemConfiguration.getInstance();
-		Logger logger = config.getLogger();
-		String mvnLocation = config.getProperty("maven-location");
-		
-		String command =  mvnLocation +  " exec:java -Dexec.mainClass=\"org.vaultdb.compiler.emp.EmpBuilder\" -Dexec.args=\"" + className + "\"";
-		logger.info("EmpBuilder command: " + command);
-		Utilities.runCmd(command);
-		
-		
-
-	}
+    EmpBuilder builder = new EmpBuilder(className);
+    builder.compile();
+  }
+//	public static void buildEmpProgram(String className) throws Exception {
+//		// fork and exec EmpBuilder to make it see the new files
+//
+//
+//		SystemConfiguration config = SystemConfiguration.getInstance();
+//		Logger logger = config.getLogger();
+//		String mvnLocation = config.getProperty("maven-location");
+//
+//		String command =  mvnLocation +  " exec:java -Dexec.mainClass=\"org.vaultdb.compiler.emp.EmpBuilder\" -Dexec.args=\"" + className + "\"";
+//		logger.info("EmpBuilder command: " + command);
+//		Utilities.runCmd(command);
+//
+//
+//
+//	}
 }
