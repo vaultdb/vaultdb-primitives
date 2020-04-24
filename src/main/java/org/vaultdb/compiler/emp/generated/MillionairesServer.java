@@ -39,22 +39,17 @@ public class MillionairesServer {
     });
   }
 
-  static class MillionairesImpl extends MillionairesGrpc.MillionairesImplBase {
+  public static class MillionairesImpl extends MillionairesGrpc.MillionairesImplBase {
 
     @Override
     public void sendMillionairesQuery(
         MillionairesRequest req, StreamObserver<MillionairesReply> responseObserver) {
 
       MillionairesClass m = new MillionairesClass();
-
+      boolean aliceRicher;
       m.configure(req.getParty(), req.getPort(), req.getHost());
-      System.out.println("party: " + req.getParty());
-      System.out.println("port: " + req.getPort());
-      System.out.println("host: " + req.getHost());
-      System.out.println("net worth: " + req.getNetWorth());
 
-      boolean aliceRicher = m.run(req.getNetWorth());
-      System.out.println(aliceRicher);
+      aliceRicher = m.run(req.getNetWorth());
       m.cleanup();
       m.close();
 
