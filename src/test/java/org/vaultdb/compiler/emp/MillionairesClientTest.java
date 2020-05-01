@@ -1,12 +1,12 @@
 package org.vaultdb.compiler.emp;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 import java.util.List;
 import org.junit.Test;
 import org.vaultdb.runner.TestResult;
 import org.vaultdb.runner.TestRunner;
+
+import static org.junit.Assert.*;
 
 public class MillionairesClientTest {
 
@@ -21,35 +21,39 @@ public class MillionairesClientTest {
 
     Thread aliceServerThread = new Thread(() -> {
       try {
-        TestRunner.run(serverClass, alicePort, List.of());
+        TestRunner.run(serverClass, alicePort, null);
       } catch (IOException e) {
+        fail();
         e.printStackTrace();
       }
     });
     Thread bobServerThread = new Thread(() -> {
       try {
-        TestRunner.run(serverClass, bobPort, List.of());
+        TestRunner.run(serverClass, bobPort, null);
       } catch (IOException e) {
+        fail();
         e.printStackTrace();
       }
     });
 
     Thread aliceClientThread = new Thread(() -> {
       try {
-        TestResult result = TestRunner.run(clientClass, aliceInput, List.of());
+        TestResult result = TestRunner.run(clientClass, aliceInput, null);
         List<String> outputList = result.outputList;
         assertEquals(outputList.get(0), "Is Alice Richer: No!");
       } catch (Exception e) {
+        fail();
         e.printStackTrace();
       }
     });
 
     Thread bobClientThread = new Thread(() -> {
       try {
-        TestResult result = TestRunner.run(clientClass, bobInput, List.of());
+        TestResult result = TestRunner.run(clientClass, bobInput, null);
         List<String> outputList = result.outputList;
         assertEquals(outputList.get(0), "Is Alice Richer: No!");
       } catch (Exception e) {
+        fail();
         e.printStackTrace();
       }
     });

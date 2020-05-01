@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +15,11 @@ public final class TestRunner {
 
     OutputStream outputStream = new ByteArrayOutputStream();
     OutputStream errorStream = new ByteArrayOutputStream();
+
+    if (null == input) {
+      input = new ArrayList<>();
+    }
+
     String inputString = String.join("\n", input);
     InputStream inputStream = new ByteArrayInputStream(inputString.getBytes());
 
